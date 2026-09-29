@@ -51,8 +51,7 @@
             "name": "scheduler",
             "kind": "cron",
             "required": false,
-            "command": "php artisan schedule:run",
-            "interval": "every minute"
+            "command": "php artisan schedule:run"
         }
     ],
     "build": {

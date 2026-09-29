@@ -1,4 +1,35 @@
-LICENSE: bamboo
+bamboo - Licence
 
-Replace this placeholder with the licence granted to buyers.
-Shipora sells Regular and Extended licences; state here what each allows.
+Copyright (c) 2026 KM Capital Group. All rights reserved.
+
+This product is sold on Shipora under two licences. The licence you bought
+is shown on your purchase receipt.
+
+1. Regular Licence
+
+   - You may use bamboo to build ONE end product (one SaaS application or one
+     client project) for yourself or for one client.
+   - End users of that product may use it for free, or you may charge them
+     for access to the service it provides.
+   - You may modify the source code as needed for that end product.
+   - You may not resell, redistribute or sublicense the source code, alone or
+     as part of another starter kit, template or code library.
+
+2. Extended Licence
+
+   - Everything allowed by the Regular Licence, for an UNLIMITED number of
+     end products, for yourself or for your clients.
+   - You may not resell, redistribute or sublicense the source code as a
+     starter kit, template, boilerplate or code library, whether modified or
+     not.
+
+3. Both licences
+
+   - Ownership of the source code remains with the author.
+   - Third-party dependencies (Laravel, Vue, Laravel Cashier and other
+     packages installed through Composer and npm) are distributed under their
+     own licences, mostly MIT. Those licences apply to those packages.
+   - The product is provided "as is", without warranty of any kind. The author
+     is not liable for any claim, damages or other liability arising from the
+     use of the product.
+   - A licence is terminated if its terms are breached.

@@ -1,10 +1,13 @@
 # Changelog
 
-All notable changes follow [Semantic Versioning](https://semver.org).
+All notable changes to this project are documented in this file.
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
+and the project uses [Semantic Versioning](https://semver.org/).
 
-## [0.1.0] Unreleased
+## [0.1.0] - 2026-09-29
 
-- First version (proof of concept).
+### Added
+
 - Laravel 13 + Vue 3 (Inertia) starter with sign up, sign in, sign out, password reset, 2FA and teams.
 - TikTok content planner: videos per team, status pipeline, hook suggestions, views/likes stats.
 - Free plan limited to 5 videos, Pro plan through Stripe Checkout (Laravel Cashier, test mode).
