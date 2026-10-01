@@ -14,7 +14,6 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Fortify\Contracts\PasskeyUser;
 use Laravel\Fortify\PasskeyAuthenticatable;
-use Laravel\Cashier\Billable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
 /**
@@ -29,6 +28,9 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property string|null $remember_token
  * @property int|null $current_team_id
  * @property bool $is_admin
+ * @property string|null $stripe_customer_id
+ * @property string|null $stripe_subscription_id
+ * @property string|null $subscription_status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Team|null $currentTeam
@@ -37,11 +39,11 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property-read Collection<int, Team> $teams
  */
 #[Fillable(['name', 'email', 'password', 'current_team_id'])]
-#[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
+#[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token', 'stripe_customer_id', 'stripe_subscription_id'])]
 class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
-    use Billable, HasFactory, HasTeams, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
+    use HasFactory, HasTeams, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
 
     /**
      * Get the attributes that should be cast.
@@ -59,10 +61,10 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     }
 
     /**
-     * Whether the user has an active "Pro" Stripe subscription (synced by the Cashier webhook).
+     * Whether the user has an active "Pro" Stripe subscription (synced by StripeWebhookController).
      */
     public function isPro(): bool
     {
-        return $this->subscribed('default');
+        return in_array($this->subscription_status, ['active', 'trialing'], true);
     }
 }

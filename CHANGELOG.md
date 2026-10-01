@@ -10,6 +10,6 @@ and the project uses [Semantic Versioning](https://semver.org/).
 
 - Laravel 13 + Vue 3 (Inertia) starter with sign up, sign in, sign out, password reset, 2FA and teams.
 - TikTok content planner: videos per team, status pipeline, hook suggestions, views/likes stats.
-- Free plan limited to 5 videos, Pro plan through Stripe Checkout (Laravel Cashier, test mode).
+- Free plan limited to 5 videos, Pro plan through Stripe Checkout (official stripe-php SDK, test mode) with a signed webhook at `/stripe/webhook`.
 - Admin area protected by an `is_admin` role, granted with `php artisan bamboo:make-admin`.
 - Demo seeder and `/up` healthcheck.

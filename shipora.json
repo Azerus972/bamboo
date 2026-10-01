@@ -32,6 +32,10 @@
         {
             "name": "npm",
             "version": ">=10"
+        },
+        {
+            "name": "node",
+            "version": ">=20.19"
         }
     ],
     "databases": [

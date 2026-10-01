@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\Teams\TeamInvitationController;
 use App\Http\Controllers\VideoController;
 use App\Http\Middleware\EnsureTeamMembership;
@@ -24,6 +25,8 @@ Route::prefix('{current_team}')
         Route::get('billing/checkout', [BillingController::class, 'checkout'])->name('billing.checkout');
         Route::get('billing/portal', [BillingController::class, 'portal'])->name('billing.portal');
     });
+
+Route::post('stripe/webhook', StripeWebhookController::class)->name('stripe.webhook');
 
 Route::get('admin', AdminController::class)
     ->middleware(['auth', 'verified', EnsureUserIsAdmin::class])

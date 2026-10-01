@@ -9,7 +9,7 @@ TikTok content planner SaaS starter (proof of concept): teams plan their TikTok 
 - Laravel 13 backend, Vue 3 frontend rendered through Inertia (`resources/js/pages`).
 - Authentication: Laravel Fortify (sign up, sign in, sign out, password reset, email verification, 2FA, passkeys).
 - **Tenant model: teams.** Every user gets a personal team on sign up and can create or join other teams. Team URLs are prefixed with the team slug (`/{team}/videos`). The `EnsureTeamMembership` middleware returns 403 when the user is not a member of that team, and `VideoController` only queries through `$currentTeam->videos()`, so a video id from another team returns 404. Covered by `tests/Feature/VideoTest.php`.
-- Billing: Laravel Cashier (Stripe) on the `User` model. `GET /{team}/billing/checkout` opens Stripe Checkout for `STRIPE_PRICE`; `GET /{team}/billing/portal` opens the customer portal. Cashier's built-in `POST /stripe/webhook` syncs subscriptions (point a Stripe test webhook at it).
+- Billing: official `stripe/stripe-php` SDK (no Laravel Cashier, so no `ext-bcmath` requirement). `GET /{team}/billing/checkout` opens Stripe Checkout for `STRIPE_PRICE`; `GET /{team}/billing/portal` opens the customer portal. `POST /stripe/webhook` (`StripeWebhookController`) verifies the signature with `STRIPE_WEBHOOK_SECRET` and stores the subscription status on the user (`checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`).
 - Admin: `/admin` requires `users.is_admin = true` (`EnsureUserIsAdmin` middleware). No admin account or password is shipped.
 - Main files: `app/Http/Controllers/VideoController.php`, `BillingController.php`, `Admin/AdminController.php`, `app/Models/Video.php`, `routes/web.php`, `resources/js/pages/videos/Index.vue`.
 
@@ -23,6 +23,8 @@ TikTok content planner SaaS starter (proof of concept): teams plan their TikTok 
 - Mail
 
 ## Installation
+
+Requires PHP 8.4 with the `pdo_pgsql` extension (plus the extensions bundled with the official PHP image: curl, mbstring, openssl, dom, xml…), Composer 2.7+, Node.js 20.19+ and npm 10+.
 
 ```sh
 composer install --no-interaction --prefer-dist
@@ -42,7 +44,7 @@ Every variable is listed in `.env.example` and in `shipora.json` → `env`. Use 
 
 ## Database
 
-PostgreSQL. Migrations create the full schema (users, teams, team members/invitations, videos, Cashier subscriptions). Tests run on in-memory SQLite (see `phpunit.xml`) so they need no external database.
+PostgreSQL. Migrations create the full schema (users with Stripe subscription columns, teams, team members/invitations, videos). Tests run on in-memory SQLite (see `phpunit.xml`) so they need no external database.
 
 ## Queues
 
@@ -60,7 +62,7 @@ The app works without it; expired invitations are then simply not purged.
 
 ## Storage
 
-Not used. The app writes no user files; only Laravel's own `storage/` (logs, compiled views) and `bootstrap/cache/`, which must be writable.
+Not used. The app writes no user files; only Laravel's own `storage/` (logs, compiled views) and `bootstrap/cache/`, which must be writable. `storage/framework/cache/` is not shipped: Laravel creates it on demand if the file cache store is used.
 
 ## Build
 
@@ -75,7 +77,7 @@ npm run build
 ## Known issues
 
 - Proof of concept: no real TikTok API connection. Views and likes are entered manually; hook suggestions come from local templates.
-- Upgrading returns 503 until `STRIPE_SECRET` and `STRIPE_PRICE` are set, and the Pro status only updates once the Stripe webhook (`/stripe/webhook`) is configured.
+- Upgrading returns 503 until `STRIPE_SECRET` and `STRIPE_PRICE` are set, and the Pro status only updates once a Stripe test webhook points to `/stripe/webhook` with its secret in `STRIPE_WEBHOOK_SECRET`.
 - The free-plan limit is checked per user subscription, not per team.
 
 ## Customization guide

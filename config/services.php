@@ -36,7 +36,10 @@ return [
     ],
 
     'stripe' => [
-        // Stripe Price ID (test mode) of the "Pro" plan, used by Cashier Checkout.
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+        'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+        // Stripe Price ID (test mode) of the "Pro" plan.
         'price' => env('STRIPE_PRICE'),
     ],
 
