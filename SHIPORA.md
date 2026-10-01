@@ -70,6 +70,8 @@ Not used. The app writes no user files; only Laravel's own `storage/` (logs, com
 npm run build
 ```
 
+The build needs only Node.js: no PHP and no network access beyond `npm ci`. The Wayfinder route helpers (`resources/js/actions`, `resources/js/routes`, `resources/js/wayfinder`) are generated TypeScript committed with the source, and the Instrument Sans font comes from the `@fontsource/instrument-sans` npm package.
+
 ## Tests
 
 `php artisan test`
@@ -87,4 +89,5 @@ npm run build
 - Hook templates: `hookTemplates` in `resources/js/pages/videos/Index.vue`.
 - Plan price: change `STRIPE_PRICE`.
 - Navigation: `resources/js/components/AppSidebar.vue`.
+- After adding or changing Laravel routes or controllers, regenerate the frontend route helpers with `php artisan wayfinder:generate --with-form` (done automatically by `npm run dev`) and commit them.
 - UI components: shadcn-vue in `resources/js/components/ui`.

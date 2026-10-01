@@ -31,9 +31,6 @@ coverage/
 bootstrap/ssr/
 public/storage
 storage/pail/
-resources/js/actions/
-resources/js/routes/
-resources/js/wayfinder/
 public/fonts-manifest.dev.json
 auth.json
 .claude/

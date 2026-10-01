@@ -3,7 +3,6 @@ import { wayfinder } from '@laravel/vite-plugin-wayfinder';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import laravel from 'laravel-vite-plugin';
-import { bunny } from 'laravel-vite-plugin/fonts';
 import { defineConfig, lazyPlugins } from 'vite-plus';
 
 export default defineConfig({
@@ -11,11 +10,8 @@ export default defineConfig({
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.ts'],
             refresh: true,
-            fonts: [
-                bunny('Instrument Sans', {
-                    weights: [400, 500, 600],
-                }),
-            ],
+            // Fonts come from the @fontsource npm package (resources/css/app.css),
+            // so the build makes no network call.
         }),
         inertia(),
         tailwindcss(),
@@ -27,9 +23,16 @@ export default defineConfig({
                 },
             },
         }),
-        wayfinder({
-            formVariants: true,
-        }),
+        // Wayfinder TypeScript files (resources/js/actions, routes, wayfinder)
+        // are committed, so `npm run build` needs no PHP. They are regenerated
+        // by `npm run dev`, or manually with:
+        // php artisan wayfinder:generate --with-form
+        {
+            ...wayfinder({
+                formVariants: true,
+            }),
+            apply: 'serve',
+        },
     ]),
     server: {
         watch: {

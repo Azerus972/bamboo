@@ -13,3 +13,4 @@ and the project uses [Semantic Versioning](https://semver.org/).
 - Free plan limited to 5 videos, Pro plan through Stripe Checkout (official stripe-php SDK, test mode) with a signed webhook at `/stripe/webhook`.
 - Admin area protected by an `is_admin` role, granted with `php artisan bamboo:make-admin`.
 - Demo seeder and `/up` healthcheck.
+- Frontend build runs with Node.js only and offline: Wayfinder route helpers are committed and fonts are bundled from npm.
